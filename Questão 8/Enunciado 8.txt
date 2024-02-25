@@ -1,0 +1,12 @@
+8) Crie um sistema para armazenar tarefas em um aplicativo de gerenciamento
+de tarefas. Cada tarefa deve conter informações como nome, data de criação
+(string), prazo para conclusão (string) e status (pendente, em andamento,
+concluída). Quando uma tarefa muda de status, ela é transferida para outra
+pilha, ou seja, deve haver uma pilha para cada status de tarefas. Defina as
+funções para:
+	a) adicionar uma nova tarefa;
+	b) iniciar o desenvolvimento de uma tarefa;
+	c) concluir uma tarefa;
+	d) exibir todas as tarefas pendentes;
+	e) exibir as tarefas em andamento;
+	f) exibir tarefas concluídas.

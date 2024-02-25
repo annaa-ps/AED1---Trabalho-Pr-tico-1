@@ -1,0 +1,6 @@
+2) Crie uma pilha estática simples para armazenar informações de livros,
+contendo informações de código, título e autor. Defina as structs Livro e Pilha.
+Inclua funções para:
+	a) adicionar um livro;
+	b) remover um livro;
+	c) exibir todos os livros na pilha

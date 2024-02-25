@@ -1,0 +1,9 @@
+3) Crie uma fila de carros que são atendidos em um posto de combustíveis. A
+struct Carro deve guardar informações sobre a placa, modelo e ano de
+fabricação do veículo. Os elementos da fila devem ser criados utilizando
+alocação dinâmica. Crie funções para:
+	a) adicionar um carro na fila;
+	b) atender um carro (removê-lo da fila);
+	c) verificar, a partir de uma placa, se o veículo está presente na fila;
+	d) exibir todos os carros esperando atendimento;
+	e) exibir os veículos que já foram atendidos.

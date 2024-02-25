@@ -1,0 +1,6 @@
+9) Implemente um programa que simule o processo de desempilhar números
+inteiros de uma pilha e enfileirar em uma estrutura de fila. Crie uma pilha com
+alguns elementos e transfira esses elementos para uma fila, mantendo a
+ORDEM ORIGINAL DE INSERÇÃO. Exemplo:
+	a) Pilha inicial: ini | 1 | 2 | 4 | 8 | 9 | fim
+	b) Fila desejada: ini | 1 | 2 | 4 | 8 | 9 | fim

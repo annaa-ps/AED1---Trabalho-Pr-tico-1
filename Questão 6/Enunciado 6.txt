@@ -1,0 +1,8 @@
+6) Crie um sistema de controle de estoque em um armazém. Cada caixa de
+produto é representada por uma estrutura contendo informações como
+código, descrição e quantidade. Implemente uma pilha dinâmica para
+armazenar essas caixas de produtos. Defina as funções para:
+	a) adicionar uma nova caixa à pilha;
+	b) remover uma caixa quando for retirada do estoque;
+	c) pesquisar uma caixa pelo código do produto;
+	d) exibir todas as caixas no estoque.

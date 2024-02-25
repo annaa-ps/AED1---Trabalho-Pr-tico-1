@@ -1,0 +1,11 @@
+4) Implemente uma fila com alocação de memória dinâmica para armazenar
+alunos da UFU. É preciso guardar o número de matrícula, o nome, o nome do
+curso e a situação acadêmica do aluno. A situação acadêmica pode ter 3
+estados: cursando, formado ou desistente. Inclua funções para:
+	a) matricular um aluno;
+	b) atualizar os dados do aluno;
+	c) formar o aluno (removendo o mesmo da fila);
+	d) efetivar seu pedido de desistência (removendo o mesmo da fila);
+	e) listar todos os alunos matriculados;
+	f) listar os alunos desistentes;
+	g) listar os alunos formados.

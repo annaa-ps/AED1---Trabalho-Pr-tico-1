@@ -1,0 +1,9 @@
+7) Implemente uma pilha dinâmica para gerenciar pedidos em um restaurante.
+Cada pedido deve conter informações sobre o número do pedido, o item
+solicitado, a mesa do cliente e o status do pedido (preparando, pronto para
+servir, servido). Defina as funções para:
+a) registrar um novo pedido;
+b) atualizar o status de um pedido.
+c) servir o pedido quando (o removendo da pilha).
+d) exibir os pedidos aguardando atendimento;
+e) exibir os pedidos servidos ao cliente.

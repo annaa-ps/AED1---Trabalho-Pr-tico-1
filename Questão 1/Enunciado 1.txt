@@ -1,0 +1,9 @@
+1) Implemente uma fila estática simples usando um vetor para armazenar
+informações de lotes de produtos que são embalados em uma fábrica. O
+sistema deve guardar as informações de código, nome e quantidade de
+produtos a serem embalados. Defina as structs Produto e Fila. O sistema
+deve incluir funções para:
+	a) adicionar um elemento;
+	b) remover um elemento;
+	c) atualizar o nome de um elemento;
+	d) exibir toda a fila de serviços;

@@ -1,0 +1,11 @@
+5) Em um sistema operacional multitarefa, os processos que vão sendo criados
+ficam na fila aguardando sua vez para ocupar o processador. O escalonador
+de processos tem a função de escolher qual será o próximo processo a
+ocupar o processador, de acordo com sua ordem de chegada (primeiro que
+entra, primeiro que sai - FIFO). Implemente em C um programa que simule o
+comportamento do algoritmo de escalonamento FIFO.
+	a) O programa deve solicitar ao usuário o nome do processo e o seu
+	tempo de execução.
+	b) Seu programa deve calcular o tempo médio de execução dos
+	processos que estão esperando para serem executados e também dos
+	que já foram executados.
