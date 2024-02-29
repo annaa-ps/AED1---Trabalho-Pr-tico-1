@@ -1,6 +1,7 @@
+/*Fila 1 -> FIFO(First Int, Firts Out)*/
 #include<stdlib.h>
 #include <stdio.h>
-#include<string.h> 
+#include<string.h>
 
 typedef struct no{
   char nome[50];
@@ -22,7 +23,7 @@ void criar_fila(Fila *fila){
 }
 
 //Função para inserir um elemento na fila
-void inserirFila(Fila *fila, char nome[], int tempoExecucao){
+void inserirFila(Fila *fila, char nome[], float tempoExecucao){
   No *novo = (No*)malloc(sizeof(No));
 
   if(novo){
@@ -30,6 +31,7 @@ void inserirFila(Fila *fila, char nome[], int tempoExecucao){
     novo->tempoExecucao = tempoExecucao;
     novo->proximo = NULL;
     
+    printf("Tempo de execucao do processo inserido: %.2f\n", novo->tempoExecucao);
     if(fila->inicio == NULL){
       fila->inicio = novo;
       fila->fim = novo;
@@ -75,6 +77,11 @@ void imprimir(Fila *fila){
   printf("\n\t-------FIM FILA-------\n");
 }
 
+float calcular(){
+
+}
+
+//Função para calcular o tempo médio de execução dos processos que estão esperando para serem executados
 float calcularTempoMedio(Fila *fila){
   No *aux = fila->inicio;
   int qtdeProcessos = 0;
@@ -82,11 +89,9 @@ float calcularTempoMedio(Fila *fila){
 
 
   while(aux){
-    tempoTotal = aux->tempoExecucao + 1;
+    tempoTotal += aux->tempoExecucao;
     qtdeProcessos++;
-    
     aux = aux->proximo;
-    printf("\nProcessos: %d, tempo: %f\n", qtdeProcessos, tempoTotal); 
   }
 
   if(qtdeProcessos == 0){
@@ -94,7 +99,7 @@ float calcularTempoMedio(Fila *fila){
     return 0;
   }
 
-  return tempoTotal/qtdeProcessos; 
+  return tempoTotal / qtdeProcessos; 
 }
 
 
@@ -123,7 +128,7 @@ int main(){
           printf("\nInforme o nome do %d processo:\n", i+1);
           scanf("%s", nome);
           printf("Informe o tempo de execucao do  %d processo:\n", i+1);
-          scanf("%d", &tempoExecucao); 
+          scanf("%f", &tempoExecucao); 
 
           //Inserindo os dados na fila
           inserirFila(&fila, nome, tempoExecucao); 
