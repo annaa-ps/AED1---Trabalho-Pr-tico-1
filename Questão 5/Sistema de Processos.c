@@ -1,5 +1,6 @@
 #include<stdlib.h>
 #include <stdio.h>
+#include<string.h> 
 
 typedef struct no{
   char nome[50];
@@ -28,7 +29,7 @@ void inserirFila(Fila *fila, char nome[], int tempoExecucao){
     strcpy(novo->nome, nome);
     novo->tempoExecucao = tempoExecucao;
     novo->proximo = NULL;
-
+    
     if(fila->inicio == NULL){
       fila->inicio = novo;
       fila->fim = novo;
@@ -81,17 +82,19 @@ float calcularTempoMedio(Fila *fila){
 
 
   while(aux){
-    tempoTotal += aux->tempoExecucao;
+    tempoTotal = aux->tempoExecucao + 1;
     qtdeProcessos++;
+    
     aux = aux->proximo;
+    printf("\nProcessos: %d, tempo: %f\n", qtdeProcessos, tempoTotal); 
   }
 
   if(qtdeProcessos == 0){
-    printf("Nenhum processo na fila\n");
+    printf("\nNenhum processo na fila\n");
     return 0;
   }
 
-  return (tempoTotal/qtdeProcessos); 
+  return tempoTotal/qtdeProcessos; 
 }
 
 
@@ -105,9 +108,9 @@ int main(){
   //Criando a fila
   criar_fila(&fila);
   do{
-    printf("\n------------------------------MENU DE OPCOES------------------------------\n");
+    printf("\n---------------------------------MENU DE OPCOES---------------------------------\n");
     printf("\t1 - Adicionar Processos\n\t2 - Remover Processos\n\t3 - Calcular Tempo Medio\n\t4 - Imprimir lista de Procesos\n");
-    printf("--------------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------\n");
     scanf("%d", &opcao);
     getchar();
 
@@ -117,7 +120,7 @@ int main(){
         scanf("%d", &qtdeProcessos);
         //Lendo os dados do usuário
         for(i = 0; i < qtdeProcessos; i++){
-          printf("Informe o nome do %d processo:\n", i+1);
+          printf("\nInforme o nome do %d processo:\n", i+1);
           scanf("%s", nome);
           printf("Informe o tempo de execucao do  %d processo:\n", i+1);
           scanf("%d", &tempoExecucao); 
@@ -141,7 +144,9 @@ int main(){
 
       case 3:
         tempoMedio = calcularTempoMedio(&fila);
+        printf("\n-------------------------------------------");
         printf("\nTempo medio de execucao: %.2f\n", tempoMedio);
+        printf("-------------------------------------------");
         break;
       case 4:
         imprimir(&fila); 
