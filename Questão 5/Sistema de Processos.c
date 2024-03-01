@@ -1,4 +1,4 @@
-/*Fila 1 -> FIFO(First Int, Firts Out)*/
+/*Sistema de Processos */
 #include<stdlib.h>
 #include <stdio.h>
 #include<string.h>
@@ -30,8 +30,7 @@ void inserirFila(Fila *fila, char nome[], float tempoExecucao){
     strcpy(novo->nome, nome);
     novo->tempoExecucao = tempoExecucao;
     novo->proximo = NULL;
-    
-    printf("Tempo de execucao do processo inserido: %.2f\n", novo->tempoExecucao);
+
     if(fila->inicio == NULL){
       fila->inicio = novo;
       fila->fim = novo;
@@ -75,10 +74,6 @@ void imprimir(Fila *fila){
     aux = aux->proximo;
   }
   printf("\n\t-------FIM FILA-------\n");
-}
-
-float calcular(){
-
 }
 
 //Função para calcular o tempo médio de execução dos processos que estão esperando para serem executados
