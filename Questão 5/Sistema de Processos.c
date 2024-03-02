@@ -12,6 +12,7 @@ typedef struct no{
 typedef struct {
   No *inicio;
   No *fim;
+  No *processosRemovidos; //Lista para armazenar os processos removidos
   int tam; 
 }Fila;
 
@@ -51,6 +52,10 @@ No* removerFila(Fila *fila){
     remover = fila->inicio;
     fila->inicio = remover->proximo;
     fila->tam--;
+
+    //Adiciona o processo removido para a fila de processos que já foram executados 
+    remover->proximo = fila->processosRemovidos;
+    fila->processosRemovidos = remover; 
   }else{
     printf("\n\tFila Vazia!\n");
   }
@@ -61,19 +66,19 @@ No* removerFila(Fila *fila){
 void imprimir_processo(No *processo){
     printf("----------------------------------------");
     printf("\nNome: [%s]\n", processo->nome); 
-    printf("Tempo de Execucao: [%d]\n", processo->tempoExecucao);
+    printf("Tempo de Execucao: [%.2f]\n", processo->tempoExecucao);
     printf("----------------------------------------\n");
 }
 
 //Função para imprimir a fila
 void imprimir(Fila *fila){
   No *aux = fila->inicio;
-  printf("\n\t-------FILA-------\n\t");
+  printf("\n\t\tFILA\t\n");
   while(aux){
     imprimir_processo(aux);
     aux = aux->proximo;
   }
-  printf("\n\t-------FIM FILA-------\n");
+  printf("\t\tFIM FILA\n");
 }
 
 //Função para calcular o tempo médio de execução dos processos que estão esperando para serem executados
@@ -97,19 +102,38 @@ float calcularTempoMedio(Fila *fila){
   return tempoTotal / qtdeProcessos; 
 }
 
+//Função para calcular o tempo médio de execução dos processos que já foram executados (já saíram da lista)
+float calcularTempoExecutados(No *processosRemovidos){
+  No *aux = processosRemovidos;
+  int qtdeProcessos = 0;
+  float tempoTotal = 0; 
+
+  while (aux){
+    tempoTotal += aux->tempoExecucao;
+    qtdeProcessos++;
+    aux = aux->proximo;
+  }
+
+  if(qtdeProcessos == 0){
+    printf("\nNenhum processo foi executado ainda!\n"); 
+    return 0;
+  }
+  return tempoTotal / qtdeProcessos; 
+}
+
 
 int main(){
   No *remover; 
   Fila fila; 
   char nome[50];
   int qtdeProcessos, i, opcao; 
-  float tempoMedio, tempoExecucao; 
+  float tempoMedio, tempoExecucao, tempoMedioExecutados; 
 
-  //Criando a fila
+  //Criando a fila 
   criar_fila(&fila);
   do{
     printf("\n---------------------------------MENU DE OPCOES---------------------------------\n");
-    printf("\t1 - Adicionar Processos\n\t2 - Remover Processos\n\t3 - Calcular Tempo Medio\n\t4 - Imprimir lista de Procesos\n");
+    printf("\t1 - Adicionar Processos\n\t2 - Remover Processos\n\t3 - Calcular Tempo Medio\n\t4 - Calcular Tempo Medio dos Processos ja Executados\n\t5 - Imprimir lista de Procesos\n");
     printf("----------------------------------------------------------------------------------\n");
     scanf("%d", &opcao);
     getchar();
@@ -147,8 +171,16 @@ int main(){
         printf("\n-------------------------------------------");
         printf("\nTempo medio de execucao: %.2f\n", tempoMedio);
         printf("-------------------------------------------");
+        printf("\n");
         break;
       case 4:
+        tempoMedioExecutados = calcularTempoExecutados(fila.processosRemovidos);
+        printf("-------------------------------------------------------------------------");
+        printf("\nTempo medio de execucao dos processos que ja foram executados: %.2f\n", tempoMedioExecutados);
+        printf("-------------------------------------------------------------------------");
+        printf("\n"); 
+        break;
+      case 5:
         imprimir(&fila); 
         break;
       default: 
