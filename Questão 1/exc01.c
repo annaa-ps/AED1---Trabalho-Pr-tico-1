@@ -1,15 +1,4 @@
-//Anna Karolyna Pereira Santos - 12221BCC046 | Fernanda Ferreira de Melo - 12211BCC043 | Giovana M. Ferreira - 12221BCC033 | Gustavo Henrique ?
-
-
-/*1) Implemente uma fila estática simples usando um vetor para armazenar
-informações de lotes de produtos que são embalados em uma fábrica. O
-sistema deve guardar as informações de código, nome e quantidade de
-produtos a serem embalados. Defina as structs Produto e Fila. O sistema
-deve incluir funções para:
-a) adicionar um elemento;
-b) remover um elemento;
-c) atualizar o nome de um elemento;
-d) exibir toda a fila de serviços;*/
+//Anna Karolyna Pereira Santos - 12221BCC046 | Fernanda Ferreira de Melo - 12211BCC043 | Giovana M. Ferreira - 12221BCC033 | Gustavo Henrique - 12311BCC021
 
 #include <stdio.h>
 #include <string.h>
