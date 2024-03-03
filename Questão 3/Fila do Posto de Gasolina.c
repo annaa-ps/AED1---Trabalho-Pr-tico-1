@@ -86,17 +86,22 @@ int buscarPlaca(Fila* f, char* placa, Carro* carroEncontrado) {
 }
 
 // Função para exibir todos os carros na fila
-int mostrarFila(Fila *f) {
-    if (f == NULL) return -1;
-    if (filaVazia(f) == 0) return -3; // Retorna -3 se a fila estiver vazia
-
-    Carro carroParaAtender;
-    for (int i = 0; i < f->tam; i++) {
-        removerDaFila(f, &carroParaAtender); // Remove o carro da fila e o exibe
-        printf("\nPlaca: %s, Modelo: %s, Ano de Fabricacao: %d\n", carroParaAtender.placa, carroParaAtender.modelo, carroParaAtender.anoDeFabricacao);
-        adicionarNaFila(f, carroParaAtender); // Adiciona o carro de volta à fila
+void mostrarFila(Fila* f) {
+    if (f == NULL || filaVazia(f) == 0) {
+        printf("Fila vazia.\n");
+        return;
     }
-    return 0; // Retorna 0 em caso de sucesso ao exibir a fila
+
+    /*
+     * Dada uma fila, ele usará uma iteração condicionda pelo tamanho da fila.
+     * A ideia do int indice é dado por duas partes:
+     * (f->inicio + i)  -> será nosso deslocamento pela fila, dado pelo inicio mais o deslocamento de i.
+     * % f->maxtam      -> é a garantia de estarmos dentro do escopo da nossa fila
+     */
+    for (int i = 0; i < f->tam; i++) {
+        int indice = (f->inicio + i) % f->maxtam;
+        printf("Placa: %s, Modelo: %s, Ano: %d\n", f->carros[indice].placa, f->carros[indice].modelo, f->carros[indice].anoDeFabricacao);
+    }
 }
 
 // Função para exibir o carro mais recentemente atendido
@@ -126,7 +131,7 @@ int main() {
 
     int opcao;
     char placa[8];
-    Carro carro, carroEncontrado, carroAtendido; 
+    Carro carro, carroEncontrado, carroAtendido;
 
     do {
         printf("\nMENU:\n");
@@ -142,35 +147,38 @@ int main() {
         switch(opcao) {
             case 1:
                 printf("\nInforme a placa do carro:\n");
-                scanf("%s", carro.placa);
-                printf("Informe o modelo do carro:\n");
-                scanf("%s", carro.modelo);
+                fflush(stdin);
+                scanf("%50[^\n]", carro.placa);
+                printf("Informe o modelo do carro:\n(maximo 50 caraceteres)\n");
+                fflush(stdin);
+                scanf("%50[^\n]", carro.modelo);
                 printf("Informe o ano de fabricacao do carro:\n");
                 scanf("%d", &carro.anoDeFabricacao);
                 adicionarNaFila(&fila, carro);
                 break;
             case 2:
                 if (removerDaFila(&fila, &carroAtendido) == 0) {
-                    exibirCarroAtendidoRecente(&carroAtendido); 
+                    exibirCarroAtendidoRecente(&carroAtendido);
                     adicionarNaFila(&atendidos, carroAtendido); // Adiciona o carro atendido à fila de carros atendidos
                 } else {
                     printf("\nNao ha carros na fila!\n");
                 }
                 break;
-            case 3: 
+            case 3:
                 printf("\nInforme a placa do carro:\n");
-                scanf("%s", placa);
+                fflush(stdin);
+                scanf("%50[^\n]", placa);
                 if (buscarPlaca(&fila, placa, &carroEncontrado)) {
                     printf("\nO carro com a placa %s esta na fila\n", placa);
                 } else {
                     printf("\nO carro com a placa %s nao esta na fila\n", placa);
                 }
                 break;
-            case 4: 
+            case 4:
                 printf("\nCarros esperando atendimento:\n");
                 mostrarFila(&fila);
                 break;
-            case 5: 
+            case 5:
                 mostrarVeiculosAtendidos(&atendidos);
                 break;
             case 6:
