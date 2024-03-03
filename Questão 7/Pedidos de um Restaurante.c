@@ -83,7 +83,9 @@ int atender(Pilha *p, Pilha *pAtendidos) {
 
     Pedidos paux;
     removerPedido(p, &paux);
-    printf("\nO pedido de numero %d foi atendido.\n", paux.nPedido);
+    printf("\n------------------------------------------------\n");
+    printf("O pedido de numero %d foi atendido.\n", paux.nPedido);
+    printf("------------------------------------------------\n");
     strcpy(paux.status, "servido");
     adicionarPedido(pAtendidos, paux);
     return 0;
@@ -95,12 +97,13 @@ void listarPedidosAguardando(Pilha *p) {
     if (pilhaVazia(p) == 0) return;
 
     printf("\nPedidos aguardando atendimento:\n");
+    printf("------------------------------------------------\n");
     for (int i = p->topo - 1; i >= 0; i--) {
         printf("Numero do pedido: %d\n", p->pedidos[i].nPedido);
         printf("Item solicitado: %s\n", p->pedidos[i].itemPedido);
         printf("Mesa do cliente: %d\n", p->pedidos[i].mesa);
         printf("Status do pedido: %s\n", p->pedidos[i].status);
-        printf("\n");
+        printf("------------------------------------------------\n");
     }
 }
 
@@ -111,11 +114,12 @@ void listarPedidosServidos(Pilha *p) {
 
     printf("\nPedidos servidos ao cliente:\n");
     for (int i = p->topo - 1; i >= 0; i--) {
+        printf("------------------------------------------------\n");
         printf("Numero do pedido: %d\n", p->pedidos[i].nPedido);
         printf("Item solicitado: %s\n", p->pedidos[i].itemPedido);
         printf("Mesa do cliente: %d\n", p->pedidos[i].mesa);
         printf("Status do pedido: %s\n", p->pedidos[i].status);
-        printf("\n");
+        printf("------------------------------------------------\n");
     }
 }
 
@@ -131,13 +135,15 @@ int main() {
 
     do {
         printf("\nMenu de Opcoes:\n");
+        printf("------------------------------------------------\n");
         printf("1. Registrar um novo pedido\n");
         printf("2. Atualizar o status de um pedido\n");
         printf("3. Servir o pedido\n");
         printf("4. Exibir os pedidos aguardando atendimento\n");
         printf("5. Exibir os pedidos servidos ao cliente\n");
         printf("0. Sair\n");
-        printf("Escolha uma opcao: ");
+        printf("------------------------------------------------\n");
+        printf("Escolha uma opcao:\n");
         scanf("%d", &opcao);
 
         switch (opcao) {
@@ -152,12 +158,14 @@ int main() {
                 adicionarPedido(&pilhaPedidos, novoPedido);
                 break;
             case 2:
-                printf("\nNumero do pedido a ser atualizado: ");
+                printf("\nNumero do pedido a ser atualizado:\n");
                 scanf("%d", &numPedido); // Corrigindo a leitura de numPedido
-                printf("Novo status: ");
+                printf("Novo status:\n");
                 scanf("%s", novoStatus);
                 atualizarStatus(&pilhaPedidos, numPedido, novoStatus);
+                printf("----------------------------------------\n");
                 printf("\nStatus do pedido atualizado com sucesso!\n");
+                printf("----------------------------------------\n");
                 break;
             case 3:
                 atender(&pilhaPedidos, &pilhaAtendidos);
