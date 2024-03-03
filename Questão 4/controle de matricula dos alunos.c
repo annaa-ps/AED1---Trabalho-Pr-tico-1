@@ -1,3 +1,5 @@
+//Anna Karolyna Pereira Santos - 12221BCC046 | Fernanda Ferreira de Melo - 12211BCC043 | Giovana M. Ferreira - 12221BCC033 | Gustavo Henrique - 12311BCC021
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
