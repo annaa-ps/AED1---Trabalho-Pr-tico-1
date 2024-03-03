@@ -5,7 +5,6 @@
 #include <string.h>
 #define TAMANHO 5
 
-
 typedef struct livro{
     int codigo;
     char titulo[30];
@@ -21,15 +20,6 @@ typedef struct pilha{
 void inicializar_pilha(PILHA *p){
     p->topo = 0;
 }
-
-/*void inicializaPilha(PILHA *p){
-    int i;
-    for(i=0; i<N; i++){
-        p->dados[i] = 0;
-    }
-
-    p->topo = 0;
-}*/
 
 void adicionar_livro(LIVRO novo_livro, PILHA *p){
     if(p->topo == TAMANHO){
