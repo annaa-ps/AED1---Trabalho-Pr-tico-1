@@ -1,5 +1,3 @@
-//Anna Karolyna Pereira Santos - 12221BCC046 | Fernanda Ferreira de Melo - 12211BCC043 | Giovana M. Ferreira - 12221BCC033 | Gustavo Henrique - 12311BCC021
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,8 +18,6 @@ typedef struct {
     No *inicio;
     No *fim;
 } Fila;
-
-int proximaMatricula = 1;
 
 void inicializarFila(Fila *fila) {
     fila->inicio = NULL;
@@ -55,15 +51,22 @@ No *buscarAluno(Fila *fila, int matricula) {
     return NULL;
 }
 
-void atualizarAluno(Fila *fila, int matricula, Aluno novoAluno) {
+void atualizarAluno(Fila *fila, int matricula, Aluno *novoAluno) {
     No *alunoEncontrado = buscarAluno(fila, matricula);
 
-    if (alunoEncontrado != NULL) {
-        strcpy(alunoEncontrado->aluno.nome, novoAluno.nome);
-        strcpy(alunoEncontrado->aluno.curso, novoAluno.curso);
-        strcpy(alunoEncontrado->aluno.situacao, novoAluno.situacao);
-    } else {
+    if (alunoEncontrado == NULL) {
         printf("Aluno com matricula %d não encontrado.\n", matricula);
+    } else {
+        printf("Novo nome: ");
+        scanf("%s", novoAluno->nome);
+        printf("Novo curso: ");
+        scanf("%s", novoAluno->curso);
+        printf("Nova situacao (cursando/formado/desistente): ");
+        scanf("%s", novoAluno->situacao);
+
+        strcpy(alunoEncontrado->aluno.nome, novoAluno->nome);
+        strcpy(alunoEncontrado->aluno.curso, novoAluno->curso);
+        strcpy(alunoEncontrado->aluno.situacao, novoAluno->situacao);
     }
 }
 
@@ -166,18 +169,12 @@ int main() {
             }
             case 2: {
                 int matricula;
+                Aluno novoAluno;
+                
                 printf("Informe a matricula do aluno a ser atualizado: ");
                 scanf("%d", &matricula);
-
-                Aluno novoAluno;
-                printf("Novo nome: ");
-                scanf("%s", novoAluno.nome);
-                printf("Novo curso: ");
-                scanf("%s", novoAluno.curso);
-                printf("Nova situacao (cursando/formado/desistente): ");
-                scanf("%s", novoAluno.situacao);
-
-                atualizarAluno(&filaAlunos, matricula, novoAluno);
+                
+                atualizarAluno(&filaAlunos, matricula, &novoAluno);
                 break;
             }
             case 3: {
