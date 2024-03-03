@@ -44,15 +44,6 @@ void enfileirar(Fila *fila, int item) {
     fila->tamanho++;
 }
 
-int desenfileirar(Fila *fila) {
-    int item = fila->items[fila->frente++];
-    fila->tamanho--;
-    return item;
-}
-
-int filaVazia(Fila *fila) {
-    return fila->tamanho == 0;
-}
 
 void transferirPilhaParaFila(Pilha *pilha, Fila *fila) {
     while (!pilhaVazia(pilha)) {
@@ -61,31 +52,52 @@ void transferirPilhaParaFila(Pilha *pilha, Fila *fila) {
     }
 }
 
+void printPilha(Pilha *pilha) {
+    printf("\n inicio ");
+    for (int i = pilha->top; i >= 0; i--) {
+        printf("| %d ", pilha->items[i]);
+    }
+    printf("| fim\n");
+}
+
+void printFila(Fila *fila) {
+    printf("\n inicio ");
+    for (int i = fila->frente; i <= fila->fundo; i++) {
+        printf("| %d ", fila->items[i]);
+    }
+    printf("| fim\n");
+}
+
 int main() {
-    Pilha pilhaInicial;
-    inicializarPilha(&pilhaInicial, 5);
-    empilhar(&pilhaInicial, 1);
-    empilhar(&pilhaInicial, 2);
-    empilhar(&pilhaInicial, 4);
-    empilhar(&pilhaInicial, 8);
-    empilhar(&pilhaInicial, 9);
+    Pilha pilha;
+    Fila fila;
+    int tamanho;
 
-    Fila filaDesejada;
-    inicializarFila(&filaDesejada, 5);
+    printf("\nTamanho da pilha que enfileraremos:\n->");
+    scanf("%d", &tamanho);
 
-    printf("Pilha inicial: ");
-    for (int i = pilhaInicial.top; i >= 0; i--) {
-        printf("%d ", pilhaInicial.items[i]);
+    inicializarPilha(&pilha, tamanho);
+    inicializarFila(&fila, tamanho);
+
+    printf("\n\tInsira os elementos na pilha:\n");
+    for (int i = 0; i < tamanho; i++) {
+        int elemento;
+        printf("Elemento %d:\n->", i + 1);
+        scanf("%d", &elemento);
+        empilhar(&pilha, elemento);
     }
-    printf("\n");
 
-    transferirPilhaParaFila(&pilhaInicial, &filaDesejada);
+    printf("\n--- Pilha Inicial ---");
+    printPilha(&pilha);
 
-    printf("Fila desejada: ");
-    while (!filaVazia(&filaDesejada)) {
-        printf("%d ", desenfileirar(&filaDesejada));
-    }
-    printf("\n");
+    printf("\n... Transferindo Elementos... \n");
+
+    printf("\n--- Fila Final ---");
+    transferirPilhaParaFila(&pilha, &fila);
+    printFila(&fila);
+
+    free(pilha.items);
+    free(fila.items);
 
     return 0;
 }
