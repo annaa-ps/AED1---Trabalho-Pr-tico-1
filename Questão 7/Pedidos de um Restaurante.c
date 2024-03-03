@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX 20
+
 // Struct dos pedidos.
-typedef struct {
+typedef struct{
     int nPedido;
-    char itemPedido[50]; // Aumentando o tamanho para acomodar descrições mais longas
+    char itemPedido[50];
     int mesa;
-    char status[20];
+    char status[MAX];
 } Pedidos;
 
 // Struct da pilha.
-typedef struct {
+typedef struct{
     Pedidos *pedidos;
     int topo;
     int fundo;
@@ -19,168 +21,183 @@ typedef struct {
     int maxtam;
 } Pilha;
 
-// Função para checar se a pilha está vazia.
-int pilhaVazia(Pilha *p) {
+// Checa se a pilha está vazia.
+int pilhaVazia (Pilha *p){
     if (p == NULL) return -1;
     if (p->tam == 0) return 0;
     else return 1;
 }
 
-// Função para checar se a pilha está cheia.
+// Checa se a pilha está cheia.
 int pilhaCheia(Pilha *p) {
     if (p->tam == p->maxtam) return 0;
     else return 1;
 }
 
-// Função para criar a pilha com a struct usada no programa.
-int criarPilha(Pilha *p, int maxtam) {
+// Cria a pilha com a struct usada no programa.
+int criarPilha (Pilha *p, int maxtam){
     if (maxtam == 0) return -6;
-    p->maxtam = maxtam; // Definindo tamanho máximo da pilha
+    p->maxtam = maxtam; // Definindo tamanho maximo da pilha
     p->pedidos = (Pedidos*)malloc(maxtam * sizeof(Pedidos));
     if (p->pedidos == NULL) return -1;
-    p->topo = 0; // Colocando início da pilha
+    p->topo = 0; // Colocando inicio da pilha
     p->fundo = 0; // Determinando que a pilha está vazia
     p->tam = 0; // Definindo o tamanho inicial da pilha
     return 0;
 }
 
-// Função para atualizar o status do pedido na pilha.
-void atualizarStatus(Pilha *p, int nPedido, char *s) {
-    for (int i = p->topo - 1; i >= 0; i--) {
-        if (p->pedidos[i].nPedido == nPedido) {
-            strcpy(p->pedidos[i].status, s);
-            break;
-        }
-    }
+// Atualiza o status da pedido na pilha usando funcoes da string.h para comparar e trocar as strings.
+int atualizarStatus(Pilha *p, char *s) {
+    if (p == NULL) return -1;
+    if (pilhaVazia(p) == 0) return -2;
+
+    strcpy(p->pedidos[p->topo - 1].status, s);
+    return 0;
 }
 
-// Função para adicionar um pedido à pilha de pedidos.
-int adicionarPedido(Pilha *p, Pedidos pedido) {
+
+// Funcao que adiciona um pedido a pilha de pedidos.
+// Se for a criacao de um pedido para ser preparado, ponha finalidade = 0
+int adicionarPedido(Pilha *p, Pedidos pedido, int finalidade){
     if (p == NULL) return -1;
     if (pilhaCheia(p) == 0) return -2;
 
     p->pedidos[p->topo] = pedido;
+
+    if (finalidade == 0)
+        atualizarStatus(p, "preparando");
+
     p->topo++;
     p->tam++;
     return 0;
 }
 
-// Função para remover os pedidos da pilha.
-int removerPedido(Pilha *p, Pedidos *pedido) {
+// Funcao que apenas remove os pedidos da pilha, salva em uma variavel do tipo Pedidos para uso em outras funcoes.
+int removerPedido (Pilha *p, Pedidos *pedido){
     if (p == NULL) return -1;
     if (pilhaVazia(p) == 0) return -2;
 
     *pedido = p->pedidos[p->topo - 1];
+    atualizarStatus(p, "pronto para servir");
     p->topo--;
     p->tam--;
     return 0;
 }
 
-// Função para atender um pedido na pilha.
+// Atende um pedido na pilha, isso o remove da pilha atualiza o seu status e o insere na pilha de pedidos atendidos.
 int atender(Pilha *p, Pilha *pAtendidos) {
     if ((p == NULL) || (pAtendidos == NULL)) return -1;
-    if (pilhaVazia(p) == 0) return -2;
 
     Pedidos paux;
-    removerPedido(p, &paux);
-    printf("\n------------------------------------------------\n");
-    printf("O pedido de numero %d foi atendido.\n", paux.nPedido);
-    printf("------------------------------------------------\n");
-    strcpy(paux.status, "servido");
-    adicionarPedido(pAtendidos, paux);
+
+    int resultadoRemocao = removerPedido(p, &paux);
+    if (resultadoRemocao != 0) {
+        printf("Erro ao atender pedido: %d\n", resultadoRemocao);
+        return resultadoRemocao;
+    }
+
+    printf("\nO pedido de numero %d foi atendido.\n", paux.nPedido);
+    adicionarPedido(pAtendidos, paux, 1);
+    atualizarStatus(pAtendidos, "servido");
     return 0;
 }
 
-// Função para listar os pedidos que ainda precisam ser atendidos.
-void listarPedidosAguardando(Pilha *p) {
-    if (p == NULL) return;
-    if (pilhaVazia(p) == 0) return;
+// Pedidos que ainda estão na pilha original, não infringe regras de pilha utilizando uma pilha auxiliar passando da original para ela
+// e depois de volta para a original.
+int ahAtender (Pilha *p, Pilha *aux){
+    if ((p == NULL) || (aux == NULL)) return -1;
+    if (pilhaVazia(p) == 0) return -2;
 
-    printf("\nPedidos aguardando atendimento:\n");
-    printf("------------------------------------------------\n");
-    for (int i = p->topo - 1; i >= 0; i--) {
-        printf("Numero do pedido: %d\n", p->pedidos[i].nPedido);
-        printf("Item solicitado: %s\n", p->pedidos[i].itemPedido);
-        printf("Mesa do cliente: %d\n", p->pedidos[i].mesa);
-        printf("Status do pedido: %s\n", p->pedidos[i].status);
-        printf("------------------------------------------------\n");
+    Pedidos paux;
+    while (pilhaVazia(p) != 0) {
+        removerPedido(p, &paux);
+        printf("\nO pedido de numero %d, que eh um %s, ainda precisa ser atendido e esta %s.\n", paux.nPedido, paux.itemPedido, paux.status);
+        adicionarPedido(aux, paux,1);
     }
+    while (pilhaVazia(aux) != 0) {
+        removerPedido(aux, &paux);
+        adicionarPedido(p, paux, 1);
+    }
+    return 0;
 }
 
-// Função para listar os pedidos servidos ao cliente.
-void listarPedidosServidos(Pilha *p) {
-    if (p == NULL) return;
-    if (pilhaVazia(p) == 0) return;
+// Mostra todos os itens da pilha de atendidos, não infringe regras de pilha utilizando uma pilha auxiliar passando da original para ela
+// e depois de volta para a original.
+int atendidos (Pilha *pAtendidos, Pilha *aux){
+    if ((pAtendidos == NULL) || (aux == NULL)) return -1;
+    if (pilhaVazia(pAtendidos) == 0) return -2;
 
-    printf("\nPedidos servidos ao cliente:\n");
-    for (int i = p->topo - 1; i >= 0; i--) {
-        printf("------------------------------------------------\n");
-        printf("Numero do pedido: %d\n", p->pedidos[i].nPedido);
-        printf("Item solicitado: %s\n", p->pedidos[i].itemPedido);
-        printf("Mesa do cliente: %d\n", p->pedidos[i].mesa);
-        printf("Status do pedido: %s\n", p->pedidos[i].status);
-        printf("------------------------------------------------\n");
+    Pedidos paux;
+    while (pilhaVazia(pAtendidos) != 0){
+        removerPedido(pAtendidos, &paux);
+        printf("\nO pedido de numero %d, que eh um %s, ja foi %s.\n", paux.nPedido, paux.itemPedido, paux.status);
+        adicionarPedido(aux, paux, 1);
     }
+    while (pilhaVazia(aux) != 0){
+        removerPedido(aux, &paux);
+        adicionarPedido(pAtendidos, paux, 1);
+    }
+    return 0;
 }
 
 int main() {
-    Pilha pilhaPedidos, pilhaAtendidos;
-    criarPilha(&pilhaPedidos, 20);
-    criarPilha(&pilhaAtendidos, 20);
+    // Estruturas de dados:
+    Pilha pPedidos, pAtendidos, aux;
+    Pedidos pedido;
 
-    int opcao;
-    Pedidos novoPedido;
-    int numPedido; // Declarando numPedido aqui
-    char novoStatus[20]; // Movendo a declaração para o início da função
+    // Variaveis de apoio:
+    int opcao, maxPedidos = (MAX/2), numPedido = 1;
+
+    printf("[ O maximo de pedido é de %d! ]\n", maxPedidos);
+
+    // Garantir a criacao das pilhas:
+    if (criarPilha(&pPedidos, maxPedidos) != 0 || criarPilha(&pAtendidos, maxPedidos) != 0 || criarPilha(&aux, maxPedidos) != 0) {
+        printf("Erro ao criar as pilhas.\n");
+        return -1;
+    }
 
     do {
-        printf("\nMenu de Opcoes:\n");
-        printf("------------------------------------------------\n");
-        printf("1. Registrar um novo pedido\n");
-        printf("2. Atualizar o status de um pedido\n");
-        printf("3. Servir o pedido\n");
-        printf("4. Exibir os pedidos aguardando atendimento\n");
-        printf("5. Exibir os pedidos servidos ao cliente\n");
-        printf("0. Sair\n");
-        printf("------------------------------------------------\n");
-        printf("Escolha uma opcao:\n");
+        printf("\nMENU:\n");
+        printf("1- Adicionar Pedido;\n");
+        printf("2- Atender Pedido;\n");
+        printf("3- Mostrar Pedidos Pendentes;\n");
+        printf("4- Mostrar Pedidos Atendidos;\n");
+        printf("0- Sair;\n");
+        printf("Informe a opcao desejada:\n");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                printf("\nNumero do pedido: ");
-                scanf("%d", &novoPedido.nPedido);
-                printf("Item solicitado: ");
-                scanf("%s", novoPedido.itemPedido);
-                printf("Mesa do cliente: ");
-                scanf("%d", &novoPedido.mesa);
-                strcpy(novoPedido.status, "preparando");
-                adicionarPedido(&pilhaPedidos, novoPedido);
+                printf("Informe o item do pedido: ");
+                fflush(stdin);
+                scanf("%50[^\n]", pedido.itemPedido);
+                pedido.nPedido = numPedido++;
+                pedido.mesa = 1; // Apenas como exemplo, pode ser solicitado do usuário
+                strcpy(pedido.status, "aguardando");
+                if (adicionarPedido(&pPedidos, pedido,0) != 0) {
+                    printf("Erro ao adicionar pedido.\n");
+                }
                 break;
             case 2:
-                printf("\nNumero do pedido a ser atualizado:\n");
-                scanf("%d", &numPedido); // Corrigindo a leitura de numPedido
-                printf("Novo status:\n");
-                scanf("%s", novoStatus);
-                atualizarStatus(&pilhaPedidos, numPedido, novoStatus);
-                printf("----------------------------------------\n");
-                printf("\nStatus do pedido atualizado com sucesso!\n");
-                printf("----------------------------------------\n");
+                if (atender(&pPedidos, &pAtendidos) != 0) {
+                    printf("Erro ao atender pedido.\n");
+                }
                 break;
             case 3:
-                atender(&pilhaPedidos, &pilhaAtendidos);
+                if (ahAtender(&pPedidos, &aux) != 0) {
+                    printf("Aparentemente não há pendentes :D \n");
+                }
                 break;
             case 4:
-                listarPedidosAguardando(&pilhaPedidos);
-                break;
-            case 5:
-                listarPedidosServidos(&pilhaAtendidos);
+                if (atendidos(&pAtendidos, &aux) != 0) {
+                    printf("Parece que nenhum pedido foi atendido ainda!\n");
+                }
                 break;
             case 0:
-                printf("\nSaindo...\n");
+                printf("Saindo...\n");
                 break;
             default:
-                printf("\nOpcao invalida! Tente novamente.\n");
+                printf("Opcao invalida!\n");
         }
     } while (opcao != 0);
 
