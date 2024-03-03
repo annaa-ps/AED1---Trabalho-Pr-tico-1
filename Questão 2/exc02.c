@@ -21,11 +21,13 @@ void inicializar_pilha(PILHA *p){
     p->topo = 0;
 }
 
+
 void adicionar_livro(LIVRO novo_livro, PILHA *p){
     if(p->topo == TAMANHO){
         printf("Pilha cheia! :(\n");
     }else{
          p->livro[p->topo] = novo_livro;
+         printf("Livro adicionado!\n");
          p-> topo++;
          return;
         }
@@ -78,10 +80,13 @@ int main(){
 
                 printf("Digite o codigo do livro:\n");
                 scanf("%d", &novo_livro.codigo);
+                fflush(stdin);
                 printf("Digite o titulo:\n");
                 scanf("%s", novo_livro.titulo);
+                fflush(stdin);
                 printf("Digite o nome do autor:\n");
                 scanf("%s", novo_livro.autor);
+                fflush(stdin);
                 
                 adicionar_livro(novo_livro, &livros_biblioteca);
                 break;
