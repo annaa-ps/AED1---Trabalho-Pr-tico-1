@@ -61,7 +61,7 @@ void atualizarAluno(Fila *fila, int matricula, Aluno novoAluno) {
         strcpy(alunoEncontrado->aluno.curso, novoAluno.curso);
         strcpy(alunoEncontrado->aluno.situacao, novoAluno.situacao);
     } else {
-        printf("Aluno com matrícula %d não encontrado.\n", matricula);
+        printf("Aluno com matricula %d não encontrado.\n", matricula);
     }
 }
 
@@ -73,7 +73,7 @@ void moverParaFormados(Fila *filaAlunos, Fila *filaFormados, int matricula) {
 
         enfileirarAluno(filaFormados, alunoEncontrado->aluno);
     } else {
-        printf("Aluno com matrícula %d não encontrado.\n", matricula);
+        printf("Aluno com matricula %d nao encontrado.\n", matricula);
     }
 }
 
@@ -86,7 +86,7 @@ void moverParaDesistentes(Fila *filaAlunos, Fila *filaDesistentes, int matricula
 
         enfileirarAluno(filaDesistentes, alunoEncontrado->aluno);
     } else {
-        printf("Aluno com matrícula %d não encontrado.\n", matricula);
+        printf("Aluno com matricula %d nao encontrado.\n", matricula);
     }
 }
 
@@ -95,7 +95,7 @@ void listarAlunos(Fila *fila) {
 
     printf("Lista de alunos matriculados:\n");
     while (atual != NULL) {
-        printf("Matrícula: %d, Nome: %s, Curso: %s, Situação: %s\n", atual->aluno.matricula, atual->aluno.nome, atual->aluno.curso, atual->aluno.situacao);
+        printf("Matricula: %d, Nome: %s, Curso: %s, Situacao: %s\n", atual->aluno.matricula, atual->aluno.nome, atual->aluno.curso, atual->aluno.situacao);
         atual = atual->prox;
     }
     printf("\n");
@@ -107,7 +107,7 @@ void listarDesistentes(Fila *fila) {
     printf("Lista de alunos desistentes:\n");
     while (atual != NULL) {
         if (strcmp(atual->aluno.situacao, "desistente") == 0) {
-            printf("Matrícula: %d, Nome: %s, Curso: %s\n", atual->aluno.matricula, atual->aluno.nome, atual->aluno.curso);
+            printf("Matricula: %d, Nome: %s, Curso: %s\n", atual->aluno.matricula, atual->aluno.nome, atual->aluno.curso);
         }
         atual = atual->prox;
     }
@@ -120,7 +120,7 @@ void listarFormados(Fila *fila) {
     printf("Lista de alunos formados:\n");
     while (atual != NULL) {
         if (strcmp(atual->aluno.situacao, "formado") == 0) {
-            printf("Matrícula: %d, Nome: %s, Curso: %s\n", atual->aluno.matricula, atual->aluno.nome, atual->aluno.curso);
+            printf("Matricula: %d, Nome: %s, Curso: %s\n", atual->aluno.matricula, atual->aluno.nome, atual->aluno.curso);
         }
         atual = atual->prox;
     }
@@ -135,7 +135,7 @@ int main() {
 
     int opcao;
     do {
-        printf("Escolha a opção:\n");
+        printf("Escolha a opcao:\n");
         printf("1 - Inserir aluno\n");
         printf("2 - Atualizar dados do aluno\n");
         printf("3 - Formar aluno\n");
@@ -149,13 +149,13 @@ int main() {
         switch (opcao) {
             case 1: {
                 Aluno novoAluno;
-                printf("Matrícula: ");
+                printf("Matricula: ");
                 scanf("%d", &novoAluno.matricula);
                 printf("Nome: ");
                 scanf("%s", novoAluno.nome);
                 printf("Curso: ");
                 scanf("%s", novoAluno.curso);
-                printf("Situação (cursando/formado/desistente): ");
+                printf("Situacao (cursando/formado/desistente): ");
                 scanf("%s", novoAluno.situacao);
 
                 enfileirarAluno(&filaAlunos, novoAluno);
@@ -164,7 +164,7 @@ int main() {
             }
             case 2: {
                 int matricula;
-                printf("Informe a matrícula do aluno a ser atualizado: ");
+                printf("Informe a matricula do aluno a ser atualizado: ");
                 scanf("%d", &matricula);
 
                 Aluno novoAluno;
@@ -172,7 +172,7 @@ int main() {
                 scanf("%s", novoAluno.nome);
                 printf("Novo curso: ");
                 scanf("%s", novoAluno.curso);
-                printf("Nova situação (cursando/formado/desistente): ");
+                printf("Nova situacao (cursando/formado/desistente): ");
                 scanf("%s", novoAluno.situacao);
 
                 atualizarAluno(&filaAlunos, matricula, novoAluno);
@@ -180,7 +180,7 @@ int main() {
             }
             case 3: {
                 int matricula;
-                printf("Informe a matrícula do aluno a ser formado: ");
+                printf("Informe a matricula do aluno a ser formado: ");
                 scanf("%d", &matricula);
 
                 moverParaFormados(&filaAlunos, &filaFormados, matricula);
@@ -189,7 +189,7 @@ int main() {
             }
             case 4: {
                 int matricula;
-                printf("Informe a matrícula do aluno a desistir: ");
+                printf("Informe a matricula do aluno a desistir: ");
                 scanf("%d", &matricula);
 
                 moverParaDesistentes(&filaAlunos, &filaDesistentes, matricula);
