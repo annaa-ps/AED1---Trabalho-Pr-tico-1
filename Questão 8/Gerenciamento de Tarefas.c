@@ -89,7 +89,7 @@ void imprimirTarefas(Pilha *pilha, int status){
       printf("Concluida\n");
       break;
   }
-  printf("----------------------------------------\n");
+  printf("----------------------------------------");
   No *aux = pilha->topo;
   while(aux){
     if(aux->tarefa.status == status){
@@ -107,7 +107,7 @@ void iniciarTarefa(Pilha *origem, Pilha *destino){
   Tarefa tarefaIniciada = remover_tarefa(origem);
   tarefaIniciada.status = EM_ANDAMENTO;
   adicionar_tarefa(destino, tarefaIniciada);
-  printf("Tarefa iniciada com sucesso!\n");
+  printf("\nTarefa iniciada com sucesso!\n");
 }
 
 //Função para concluir uma tarefa
