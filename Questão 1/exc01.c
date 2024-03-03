@@ -51,16 +51,22 @@ PRODUTO remove_produtos(FILA *f){
         }
         f->fim--;
     }
+    printf("Produto removido.\n");
     return dado;
 }
 
 void atualizar_nome(FILA *f, int codigo, char novo_nome[20]){
+    int existe_produto = 0; // pra ver se existe na fila
+
     for(int i = f->inicio; i < f->fim; i++){
         if(f->elementos[i].codigo == codigo){
             strcpy(f->elementos[i].nome_produto, novo_nome);
             printf("Nome alterado.\n");
-            return;
-        } else{printf("Produto nao encontrado! :(\n)");}
+            existe_produto = 1;
+            break;
+        } else if(existe_produto == 0){
+            printf("Produto nao encontrado! :(\n)");
+            }
     }
 }
 
