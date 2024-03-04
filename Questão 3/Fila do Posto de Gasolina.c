@@ -80,11 +80,11 @@ int buscarPlaca(Fila* f, char* placa, Carro* carroEncontrado) {
     for (int i = 0; i < f->tam; i++) {
         if (strcmp(f->carros[(f->inicio + i) % f->maxtam].placa, placa) == 0) {
             *carroEncontrado = f->carros[(f->inicio + i) % f->maxtam]; // Encontrou o carro com a placa especificada
-            return 5; // Retorna 5 para indicar que o carro foi encontrado na fila
+            return 1; // Retorna 1 para indicar que o carro foi encontrado na fila
         }
     }
 
-    return 0; // Retorna 0 se o carro não for encontrado na fila
+    return -1; // Retorna -1 se o carro não for encontrado na fila
 }
 
 // Função para exibir todos os carros na fila
@@ -169,8 +169,8 @@ int main() {
             case 3:
                 printf("\nInforme a placa do carro:\n");
                 fflush(stdin);
-                scanf("%50[^\n]", placa);
-                if (buscarPlaca(&fila, placa, &carroEncontrado)) {
+                scanf("%7s", placa); // Limita a entrada de placa a 7 caracteres para evitar overflow
+                if (buscarPlaca(&fila, placa, &carroEncontrado) == 1) {
                     printf("\nO carro com a placa %s esta na fila\n", placa);
                 } else {
                     printf("\nO carro com a placa %s nao esta na fila\n", placa);
