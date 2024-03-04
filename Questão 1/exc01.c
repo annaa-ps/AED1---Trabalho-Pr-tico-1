@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define MAXTAM 5 //depois quando tiver certo eu mudo pra mais, tipo uns 10
-
+#define MAXTAM 5 
 
 typedef struct produto{
 
@@ -15,7 +14,7 @@ typedef struct produto{
 
 typedef struct fila{
 
-    PRODUTO elementos[MAXTAM]; // MAXTAM = 5
+    PRODUTO elementos[MAXTAM]; // tamanho = 5
     int inicio, fim;
 
 }FILA;
@@ -46,31 +45,34 @@ PRODUTO remove_produtos(FILA *f){
         printf("Fila vazia. Nao temos elementos para serem removidos.\n"); //se não tiver uma função de fila cheia e vazia eu sempre vou ter que repetir essa verificação de forma "manual"
     }else{
         dado = f->elementos[f->inicio];
+        printf("Produto a ser removido:\n");
+        printf("Nome: %s\n", dado.nome_produto);
+        printf("Codigo: %d\n", dado.codigo);
+        printf("Quantidade: %d\n", dado.quantidade);
         for(int i = 0; i < f->fim -1; i++){
             f->elementos[i] = f->elementos[i+1];
         }
         f->fim--;
     }
-    printf("Produto removido.\n");
+    printf("Remocao concluida.\n");
     return dado;
 }
 
 void atualizar_nome(FILA *f, int codigo, char novo_nome[20]){
     int existe_produto = 0; // pra ver se existe na fila
-
     for(int i = f->inicio; i < f->fim; i++){
         if(f->elementos[i].codigo == codigo){
             strcpy(f->elementos[i].nome_produto, novo_nome);
             printf("Nome alterado.\n");
             existe_produto = 1;
             break;
-        } else if(existe_produto == 0){
-            printf("Produto nao encontrado! :(\n)");
-            }
+        }
+    }
+
+    if(existe_produto == 0){
+        printf("Produto nao encontrado! :(\n)");
     }
 }
-
-
 
 void mostrar_fila(FILA *f){
 
@@ -79,6 +81,7 @@ void mostrar_fila(FILA *f){
     }else{
         printf("-------------Produtos Encontrados-------------\n");
         for(int i = f->inicio; i < f->fim; i++){
+            printf("|Produto %d|\n", i+1);
             printf("Nome: %s\n", f-> elementos[i].nome_produto);
             printf("Codigo: %d\n", f->elementos[i].codigo);
             printf("Quantidade disponivel no estoque: %d\n", f->elementos[i].quantidade);
