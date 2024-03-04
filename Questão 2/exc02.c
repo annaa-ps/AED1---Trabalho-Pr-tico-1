@@ -26,20 +26,20 @@ void adicionar_livro(LIVRO novo_livro, PILHA *p){
     if(p->topo == TAMANHO){
         printf("Pilha cheia! :(\n");
     }else{
-         p->livro[p->topo] = novo_livro;
-         printf("Livro adicionado!\n");
-         p-> topo++;
-         return;
-        }
+        p->livro[p->topo] = novo_livro;
+        printf("Livro adicionado!\n");
+        p-> topo++;
+        return;
+    }
 }
 
 void remover_livro(PILHA *p){
     if(p-> topo == 0){
-        printf("Nao ha livros para remover!\n");
+        printf("\nNao ha livros para remover!\n");
         return;
     }else{
         p-> topo--;
-        printf("%s foi removido da pilha!\n", p->livro[p->topo].titulo);
+        printf("\n%s foi removido da pilha!\n\n", p->livro[p->topo].titulo);
     }
 }
 
@@ -47,15 +47,16 @@ void mostrar_pilha(PILHA *p){
     if(p-> topo == 0){
         printf("Pilha vazia :(\n)");
     }else{
-        printf("-------------Pilha de livros-------------\n");
+        printf("-------------Pilha de livros-------------");
         printf("\n");
         for(int i = 0; i < p-> topo; i++){
-        printf("Titulo: %s\n", p-> livro[i].titulo);
-        printf("Autor: %s\n", p-> livro[i].autor);
-        printf("Codigo: %d\n", p->livro[i].codigo);
+            printf("Titulo: %s\n", p-> livro[i].titulo);
+            printf("Autor: %s\n", p-> livro[i].autor);
+            printf("Codigo: %d\n", p->livro[i].codigo);
+            printf("--------------------------------------\n");
+        }
     }
-    }
-    
+
 }
 
 
@@ -82,20 +83,20 @@ int main(){
                 scanf("%d", &novo_livro.codigo);
                 fflush(stdin);
                 printf("Digite o titulo:\n");
-                scanf("%s", novo_livro.titulo);
+                scanf("%29[^\n]", novo_livro.titulo);
                 fflush(stdin);
                 printf("Digite o nome do autor:\n");
-                scanf("%s", novo_livro.autor);
+                scanf("%29[^\n]", novo_livro.autor);
                 fflush(stdin);
-                
+
                 adicionar_livro(novo_livro, &livros_biblioteca);
                 break;
             }
-            
+
             case 2: //Remover livro
                 remover_livro(&livros_biblioteca);
                 break;
-            
+
             case 3: //Mostrar livros
             {
                 mostrar_pilha(&livros_biblioteca);
